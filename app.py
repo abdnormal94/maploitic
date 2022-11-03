@@ -112,12 +112,12 @@ def my_form_post():
     wil1["location"] = wil1["location"].str.lower()
     merg = pd.merge(df, wil1)
     merg["link"]='<li><a href=' +merg["adress"]+ '>'+merg["job_title"]+'</a></li>'
-    fff = merg.groupby(["location", "latitude", "longitude"])['link'].apply(lambda x: ''.join(x.astype(str))).reset_index()
+    final_df = merg.groupby(["location", "latitude", "longitude"])['link'].apply(lambda x: ''.join(x.astype(str))).reset_index()
 
-    m = folium.Map(location=[36.7538259,3.057841],tiles="Stamen Toner", zoom_start=7)
-    fff.apply(lambda row:folium.Marker(location=[row["latitude"], row["longitude"]],
-                                                  radius=10, popup=row["link"])
-                                                 .add_to(m), axis=1)
+    m = folium.Map(location=[36.7538259,3.057841], tiles="Stamen Toner", zoom_start=7)
+    final_df.apply(lambda row:folium.Marker(location=[row["latitude"], row["longitude"]],
+                                              radius=10, tooltip = str(len(re.findall("<li>", row["link"])))+" offer(s)", popup="<b>"+row["location"]+":"+"<b/>"+row["link"], icon=folium.Icon(color='red', icon='fa-map-pin', prefix='fa'))
+                                             .add_to(m), axis=1)
     output_file = "map5.html"
     m.save(output_file)
     search_box = '''
