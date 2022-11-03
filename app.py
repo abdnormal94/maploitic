@@ -118,8 +118,6 @@ def my_form_post():
     final_df.apply(lambda row:folium.Marker(location=[row["latitude"], row["longitude"]],
                                               radius=10, tooltip = str(len(re.findall("<li>", row["link"])))+" offer(s)", popup="<b>"+row["location"]+":"+"<b/>"+row["link"], icon=folium.Icon(color='red', icon='fa-map-pin', prefix='fa'))
                                              .add_to(m), axis=1)
-    output_file = "map5.html"
-    m.save(output_file)
     search_box = '''
       <form method="POST">
         <input name="text">
