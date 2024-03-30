@@ -6,20 +6,28 @@ from bs4 import BeautifulSoup
 import re
 import pandas as pd
 from wilayas import wilaya
+from flask import redirect, url_for
 
 
 app = Flask(__name__)
 
-@app.route('/')
-def my_form():
-    return render_template('my-form.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def my_form_post():
-    text = request.form['text']
+    if request.method == 'POST':
+        text = request.form['text']
+        return redirect(url_for('search_results', keyword=text))
+    return render_template('my-form.html')
+
+@app.route('/search_results/<keyword>', methods=['GET', 'POST'])
+def search_results(keyword):
+    if request.method == 'POST':
+        new_keyword = request.form['new_keyword']
+        return redirect(url_for('search_results', keyword=new_keyword))
+    #keyword = request.form['text']
 
     url = "https://www.emploitic.com/offres-d-emploi?q="
-    url = url + text
+    url = url + keyword
     doc = BeautifulSoup(url, "lxml")
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.0 Safari/537.36'}
@@ -60,12 +68,18 @@ def my_form_post():
                                              .add_to(m), axis=1)
     search_box = f'''
       <form method="POST">
-        <input name="text">
-        <input type="submit" value="Enter Job Title" />
+        <input name="new_keyword" placeholder="Enter New Keyword">
+        <input type="submit" value="Search">
       </form>
-              <text>number of {text} jobs is {len(df)}</text>  
 
+      <text>Number of jobs for "{keyword}" is {len(df)}</text>  
     '''
     return search_box + m._repr_html_()
+
+
+
+
 if __name__ == "__main__":
             app.run(debug=True)
+
+
