@@ -67,6 +67,9 @@ def search_results(keyword):
                                               radius=10, tooltip = str(len(re.findall("<li>", row["link"])))+" offer(s)", popup="<b>"+row["location"]+":"+"<b/>"+row["link"], icon=folium.Icon(color='red', icon='fa-map-pin', prefix='fa'))
                                              .add_to(m), axis=1)
     search_box = f'''
+    <script>
+    document.title = "{keyword} - MAPLOITIC";
+  </script>
     <style>
         .job-count {{
         font-size: 18px;
