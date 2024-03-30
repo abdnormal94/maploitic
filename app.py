@@ -67,25 +67,61 @@ def search_results(keyword):
                                               radius=10, tooltip = str(len(re.findall("<li>", row["link"])))+" offer(s)", popup="<b>"+row["location"]+":"+"<b/>"+row["link"], icon=folium.Icon(color='red', icon='fa-map-pin', prefix='fa'))
                                              .add_to(m), axis=1)
     search_box = f'''
-    <script>
-    document.title = "{keyword} - MAPLOITIC";
-    </script>
-  <div style="background-color: #f3f6ee; padding: 20px;">
-    <div style="display: flex; align-items: center;">
-      <img src="/static/logo.png" alt="Logo" style="width: 150px; height: auto;">
-      <form method="POST">
-        <input name="new_keyword" placeholder="Enter New Keyword">
-        <input type="submit" value="Search">
-      </form>
-    </div>
+    <style>
+        .job-count {{
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 20px;
+        }}
 
-    <text>Number of offers for "{keyword}" is {len(df)}. click on the red icons to find the original announcements or make new searches</text>  
+        form {{
+        margin-top: 20px;
+        }}
 
-    <div style="margin-top: 20px;">
-      {m._repr_html_()}
+        input[type="text"] {{
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        width: 300px;
+        }}
+
+        input[type="submit"] {{
+        padding: 10px 20px;
+        background-color: #4285f4;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        }}
+
+        input[type="submit"]:hover {{
+        background-color: #357ae8;
+        }}
+    </style>
+
+    <div style="background-color: #f3f6ee; padding: 20px;">
+        <div style="display: flex; align-items: center;">
+        <a href="/">
+            <img src="/static/logo.png" alt="Logo" style="width: 100px; height: auto;">
+        </a>
+        <form method="POST">
+            <input name="new_keyword" placeholder="Enter New Keyword">
+            <input type="submit" value="Search">
+        </form>
+        </div>
+
+        <p class="job-count">Number of job listings for "{keyword}": <span style="color: #4285f4;">{len(df)}</span></p>  
+
+        <div style="margin-top: 20px;">
+        {m._repr_html_()}
+        </div>
     </div>
-  </div>
-'''
+    '''
     return search_box 
 
 
