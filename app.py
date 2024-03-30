@@ -67,14 +67,26 @@ def search_results(keyword):
                                               radius=10, tooltip = str(len(re.findall("<li>", row["link"])))+" offer(s)", popup="<b>"+row["location"]+":"+"<b/>"+row["link"], icon=folium.Icon(color='red', icon='fa-map-pin', prefix='fa'))
                                              .add_to(m), axis=1)
     search_box = f'''
+    <script>
+    document.title = "{keyword} - MAPLOITIC";
+    </script>
+  <div style="background-color: #f3f6ee; padding: 20px;">
+    <div style="display: flex; align-items: center;">
+      <img src="/static/logo.png" alt="Logo" style="width: 150px; height: auto;">
       <form method="POST">
         <input name="new_keyword" placeholder="Enter New Keyword">
         <input type="submit" value="Search">
       </form>
+    </div>
 
-      <text>Number of jobs for "{keyword}" is {len(df)}</text>  
-    '''
-    return search_box + m._repr_html_()
+    <text>Number of offers for "{keyword}" is {len(df)}. click on the red icons to find the original announcements or make new searches</text>  
+
+    <div style="margin-top: 20px;">
+      {m._repr_html_()}
+    </div>
+  </div>
+'''
+    return search_box 
 
 
 
